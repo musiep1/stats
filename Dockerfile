@@ -1,13 +1,11 @@
-FROM tomcat:6.0
+FROM registry.access.redhat.com/jboss-eap-6/eap64-openshift
 MAINTAINER PVM
 
-RUN wget -O /usr/local/tomcat/webapps/AMAXGrid.war http://nc2plenv01.lnc.com/adminsoft/OSE/src/AMAXGrid.war
-RUN wget -O /usr/local/tomcat/webapps/AMAXGridFWA.war http://nc2plenv01.lnc.com/adminsoft/OSE/src/AMAXGridFWA.war
-RUN wget -O /usr/local/tomcat/webapps/Grid.war http://nc2plenv01.lnc.com/adminsoft/OSE/src/Grid.war
+RUN curl -k https://raw.githubusercontent.com/VeerMuchandi/ps/master/deployments/ROOT.war -o $JBOSS_HOME/standalone/deployments/ROOT.war
+RUN curl http://nc2plenv01.lnc.com/adminsoft/OSE/src/AMAXGrid.war -o $JBOSS_HOME/standalone/deployments/AMAXGrid.war
+RUN curl http://nc2plenv01.lnc.com/adminsoft/OSE/src/AMAXGridFWA.war -o $JBOSS_HOME/standalone/deployments/AMAXGridFWA.war
+RUN curl http://nc2plenv01.lnc.com/adminsoft/OSE/src/Grid.war -o $JBOSS_HOME/standalone/deployments/Grid.war
 
-CMD ["catalina.sh", "run"]
-EXPOSE 8080
+EXPOSE 8080 8888
 
-# ENV DB_HOST mySqlServer
-# ENV DB_USER uuu
-# ENV DB_PASSWORD xxx
+
